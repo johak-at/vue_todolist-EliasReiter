@@ -1,6 +1,7 @@
 <script setup>
 // Import your components here:
 import HelloJOHAK from "./components/HelloJOHAK.vue";
+import ComputedDemo from "./components/ComputedDemo.vue";
 import TodoList from "./components/TodoList.vue";
 
 </script>
