@@ -1,55 +1,54 @@
 <script setup>
-import { computed } from "@vue/reactivity";
 import { ref } from "vue";
+import { computed } from "vue";
 const list = ref([]);
 const newItem = ref("");
+const filter = ref("");
+
 
 const filteredList = computed(() => {
   let result = [];
   for (let i = 0; i < list.value.length; i++) {
-    if (list.value[i].toLowerCase().includes(filter.value.toLowerCase())) {
+    if (list.value[i].name.toLowerCase().includes(filter.value.toLowerCase())) {
       result.push(list.value[i]);
     }
   }
+  return result;
 });
 
-function addItem() {
-  list.value.push(newItem.value);
+function add() {
+  list.value.push({
+    id: Date.now().toString(16),
+    name: newItem.value,
+  });
   newItem.value = "";
 }
-
-
-function deleteItem(index) {
-  list.value.splice(index, 1);
-
+function remove(id) {
+  for (let i = 0; i < list.value.length; i++) {
+    if (list.value[i].id === id) {
+      list.value.splice(i, 1);
+    }
+  }
 }
+
 </script>
 
-
-<!--create a todolist with vue-->
 <template>
-  <div>
-    <h1>Todo List</h1>
-    <input @keyup.enter="additem" type="text" v-model="newItem" />
-    <!--<input @keyup.enter="filteritem" type="text" v-model="filteritem" />-->
-    <button @click="addItem">Add</button>
-    <input type="text" placeholder="filter List" v-model="filter">
-    <ul>
-      <li v-for=" (item ,index) in list" :key="item">{{ index }} - {{item}}
 
-        <button @click="deleteItem(item)">Delete</button>
+  <div>
+    <h1>TodoList</h1>
+    <input @keyup.enter="add" v-model="newItem" />
+    <br /><br />
+    <input type="text" placeholder="filter list" v-model="filter" />
+
+    <ul>
+      <li v-for="(item, index) in filteredList" :key="item.id">
+        {{item.name}}
+        <button @click="remove(item.id)">x</button>
       </li>
+
     </ul>
 
   </div>
 
-
-
 </template>
-
-
-
-
-
-
-
